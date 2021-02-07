@@ -2,19 +2,14 @@ import React, { useState, useEffect } from 'react';
 import cn from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
 import { CssBaseline, makeStyles, Toolbar } from '@material-ui/core';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Header from '../Header';
 import MessageForm from '../MessageForm';
 import ChatsList from '../ChatsList/ChatsList';
 import MessageList from '../MessageList';
 
-const drawerWidth = 240;
 const useStyles = makeStyles({
   root: {
     display: 'flex',
-  },
-  drawer: {
-    width: drawerWidth,
   },
   content: {
     display: 'flex',
@@ -57,18 +52,8 @@ const Layout = () => {
   return (
     <div className={cn(classes.root)}>
       <CssBaseline />
-      <Header handleDrawerIsOpen={handleDrawerIsOpen} isOpen={isOpen} />
-      <SwipeableDrawer
-        open={isOpen}
-        onClose={handleDrawerIsOpen}
-        onOpen={handleDrawerIsOpen}
-        className={cn(classes.drawer)}
-        classes={{
-          paper: classes.drawer,
-        }}
-      >
-        <ChatsList chats={chats} handleDrawerIsOpen={handleDrawerIsOpen} />
-      </SwipeableDrawer>
+      <Header isOpen={isOpen} handleDrawerIsOpen={handleDrawerIsOpen} />
+      <ChatsList isOpen={isOpen} handleDrawerIsOpen={handleDrawerIsOpen} chats={chats} />
       <main className={cn(classes.content)}>
         <Toolbar />
         <MessageList messages={messages} />
