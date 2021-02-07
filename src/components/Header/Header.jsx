@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
-function Header({ handleDrawerIsOpen }) {
+function Header({ handleDrawerIsOpen, isOpen }) {
   return (
     <AppBar>
       <Toolbar>
@@ -13,7 +14,7 @@ function Header({ handleDrawerIsOpen }) {
           onClick={handleDrawerIsOpen}
           edge="start"
         >
-          <MenuIcon />
+          {isOpen ? <MenuOpenIcon /> : <MenuIcon />}
         </IconButton>
         <Typography variant="h6">Chat</Typography>
       </Toolbar>
@@ -23,6 +24,7 @@ function Header({ handleDrawerIsOpen }) {
 
 Header.propTypes = {
   handleDrawerIsOpen: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
 };
 
 export default Header;
