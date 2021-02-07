@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import { IconButton, InputBase, makeStyles } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
-import cn from 'classnames';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(1),
     display: 'flex',
     alignItems: 'center',
-    background: theme.palette.grey[200],
+    padding: theme.spacing(1),
+    background: theme.palette.primary.main,
   },
   input: {
-    marginLeft: theme.spacing(1),
     flex: 1,
+    padding: theme.spacing(1),
+    color: theme.palette.primary.contrastText,
   },
   send: {
-    padding: 10,
+    padding: theme.spacing(1),
+    color: theme.palette.primary.contrastText,
   },
 }));
 
@@ -30,12 +32,10 @@ function MessageForm({ addMessage }) {
 
   const handleSubmit = e => {
     e.preventDefault();
-
     addMessage({
       author: 'User',
       text,
     });
-
     setText('');
   };
 

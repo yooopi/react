@@ -1,23 +1,16 @@
-import { CssBaseline, Drawer, makeStyles, Toolbar } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import cn from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
+import { CssBaseline, Drawer, makeStyles, Toolbar } from '@material-ui/core';
 import Header from '../Header';
-import Message from '../Message';
 import MessageForm from '../MessageForm';
+import ChatsList from '../ChatsList/ChatsList';
+import MessageList from '../MessageList';
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
   },
   drawer: {
     width: drawerWidth,
@@ -28,41 +21,37 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
   },
   drawerHidden: {
-    visibility: 'hidden',
+    visibility: 'hidden', // Скрытый drawer перекрывал инпут
   },
   content: {
-    flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
+    flexGrow: 1,
     height: '100vh',
     overflow: 'auto',
+    marginLeft: -drawerWidth,
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: -drawerWidth,
   },
   contentShift: {
+    marginLeft: 0,
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: 0,
-  },
-  messagesList: {
-    padding: theme.spacing(2),
-    flexGrow: 1,
-    overflow: 'auto',
   },
 }));
 
 const Layout = () => {
   const classes = useStyles();
   const [messages, setMessages] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const chats = ['Bot 1', 'Bot 2', 'Bot 3'];
 
-  const handleDrawerOpen = () => {
-    setOpen(!open);
+  const handleDrawerIsOpen = () => {
+    setIsOpen(!isOpen);
   };
 
   const addMessage = ({ author, text }) => {
@@ -72,6 +61,7 @@ const Layout = () => {
         id: uuidv4(),
         author,
         text,
+        createdAt: new Date(),
       },
     ]);
   };
@@ -80,38 +70,32 @@ const Layout = () => {
     if (messages[messages.length - 1]?.author === 'User') {
       setTimeout(() => addMessage({ author: 'Bot', text: 'Hahahahhahaha :D' }), 500);
     }
-    document.getElementById('lol').lastChild?.scrollIntoView(true);
+    document.getElementById('messagesList').lastChild?.scrollIntoView(true);
   });
 
   return (
     <div className={cn(classes.root)}>
       <CssBaseline />
-      <Header handleDrawerOpen={handleDrawerOpen} />
+      <Header handleDrawerIsOpen={handleDrawerIsOpen} />
       <Drawer
-        className={cn(classes.drawer, !open && classes.drawerHidden)}
+        className={cn(classes.drawer, !isOpen && classes.drawerHidden)}
         variant="persistent"
-        open={open}
+        open={isOpen}
         classes={{
           paper: classes.drawerPaper,
         }}
       >
         <Toolbar />
+        <ChatsList chats={chats} />
       </Drawer>
-      {open && <div className={cn(classes.contentBlur)} />}
-      <main
-        className={cn(classes.content, {
-          [classes.contentShift]: open,
-        })}
-      >
+      {isOpen && <div className={cn(classes.contentBlur)} />}
+      <main className={cn(classes.content, isOpen && classes.contentShift)}>
         <Toolbar />
-        <div id="lol" className={cn(classes.messagesList)}>
-          {messages.map(({ id, author, text }) => (
-            <Message item key={id} author={author} text={text} />
-          ))}
-        </div>
+        <MessageList messages={messages} />
         <MessageForm addMessage={addMessage} />
       </main>
     </div>
   );
 };
+
 export default Layout;
