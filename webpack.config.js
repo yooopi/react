@@ -7,6 +7,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'app.js',
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -34,6 +35,7 @@ module.exports = {
     compress: true,
     hot: true,
     open: true,
+    historyApiFallback: true,
   },
   devtool: 'source-map',
   resolve: {
