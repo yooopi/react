@@ -21,7 +21,6 @@ const useStyles = makeStyles({
 const Layout = ({ children }) => {
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
-  const chats = ['Bot 1', 'Bot 2', 'Bot 3'];
 
   const handleDrawerIsOpen = () => {
     setIsOpen(!isOpen);
@@ -31,7 +30,7 @@ const Layout = ({ children }) => {
     <div className={cn(classes.root)}>
       <CssBaseline />
       <Header isOpen={isOpen} handleDrawerIsOpen={handleDrawerIsOpen} />
-      <ChatsList isOpen={isOpen} handleDrawerIsOpen={handleDrawerIsOpen} chats={chats} />
+      <ChatsList isOpen={isOpen} handleDrawerIsOpen={handleDrawerIsOpen} />
       <main className={cn(classes.content)}>
         <Toolbar />
         {children}

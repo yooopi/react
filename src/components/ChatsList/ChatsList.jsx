@@ -8,8 +8,12 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Button,
 } from '@material-ui/core';
 import AdbIcon from '@material-ui/icons/Adb';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addChatToState } from '../../actions/chatActions';
 
 const drawerWidth = 240;
 const useStyles = makeStyles({
@@ -17,8 +21,15 @@ const useStyles = makeStyles({
     width: drawerWidth,
   },
 });
-function ChatsList({ chats, isOpen, handleDrawerIsOpen }) {
+function ChatsList({ isOpen, handleDrawerIsOpen }) {
   const classes = useStyles();
+
+  const chats = useSelector(state => state.chats.byIds);
+  const dispatch = useDispatch();
+
+  const addChat = () => {
+    dispatch(addChatToState());
+  };
 
   return (
     <SwipeableDrawer
@@ -31,21 +42,23 @@ function ChatsList({ chats, isOpen, handleDrawerIsOpen }) {
       }}
     >
       <List>
-        {chats.map(text => (
-          <ListItem button key={text} onClick={handleDrawerIsOpen}>
-            <ListItemIcon>
-              <AdbIcon />
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
+        {Object.values(chats).map(({ id, title }) => (
+          <Link to={`/chats/${id}`} key={id}>
+            <ListItem button onClick={handleDrawerIsOpen}>
+              <ListItemIcon>
+                <AdbIcon />
+              </ListItemIcon>
+              <ListItemText primary={title} />
+            </ListItem>
+          </Link>
         ))}
       </List>
+      <Button onClick={addChat}>ADD CHAT</Button>
     </SwipeableDrawer>
   );
 }
 
 ChatsList.propTypes = {
-  chats: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   isOpen: PropTypes.bool.isRequired,
   handleDrawerIsOpen: PropTypes.func.isRequired,
 };

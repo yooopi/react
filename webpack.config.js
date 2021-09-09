@@ -36,6 +36,7 @@ module.exports = {
     hot: true,
     open: true,
     historyApiFallback: true,
+    port: 9000,
   },
   devtool: 'source-map',
   resolve: {
